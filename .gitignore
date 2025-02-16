@@ -1,5 +1,6 @@
 # package
 .venv/
+__pycache__
 
 # editor
 .idea/
