@@ -15,12 +15,26 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  web:
+    build: .
+    container_name: django_container
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin_container
     restart: always
     environment:
-      PMA_HOST: db
+      PMA_HOST: ${MYSQL_HOST}
       PMA_USER: ${MYSQL_USER}
       PMA_PASSWORD: ${MYSQL_PASSWORD}
       PMA_ABSOLUTE_URI: http://localhost:8080/

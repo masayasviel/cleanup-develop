@@ -10,7 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+import dj_database_url
+
+
+def create_db_url(
+    *,
+    engine: str,
+    user: str,
+    password: str,
+    host: str,
+    db_name: str,
+    init_command: str,
+    port: str = "3306",
+    charset: str = "utf8mb4",
+) -> str:
+    return f"{engine}://{user}:{password}@{host}:{port}/{db_name}?charset={charset}&init_command={init_command}"
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'defaultdb.apps.DefaultdbConfig'
 ]
 
 MIDDLEWARE = [
@@ -74,10 +93,17 @@ WSGI_APPLICATION = 'cleanup_develop.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.parse(
+        create_db_url(
+            engine='mysql',
+            user=os.environ['MYSQL_USER'],
+            password=os.environ['MYSQL_PASSWORD'],
+            host=os.environ['MYSQL_HOST'],
+            db_name=os.environ['MYSQL_DATABASE'],
+            init_command="SET sql_mode='STRICT_TRANS_TABLES'",
+            port=os.environ.get('MYSQL_PORT', 3306),
+        )
+    ),
 }
 
 
