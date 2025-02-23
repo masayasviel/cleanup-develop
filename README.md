@@ -26,6 +26,12 @@ docker-compose run web python manage.py makemigrations defaultdb
 docker-compose run web python manage.py migrate
 ```
 
+### fixture
+
+```sh
+docker-compose run web python manage.py loaddata user
+```
+
 ### php my admin
 
 `http://localhost:8080`
