@@ -1,0 +1,13 @@
+[
+  {
+    "model": "defaultdb.article",
+    "pk": 1,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "title": "はじめまして",
+      "article_path": "path/to/initial",
+      "userId": 1
+    }
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "model": "defaultdb.user",
+    "pk": 1,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "name": "管理者",
+      "code": "admin"
+    }
+  },
+  {
+    "model": "defaultdb.user",
+    "pk": 2,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "name": "フロント",
+      "code": "front"
+    }
+  },
+  {
+    "model": "defaultdb.user",
+    "pk": 3,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "name": "AWS",
+      "code": "aws"
+    }
+  }
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "model": "default.tag",
+    "pk": 1,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "JavaScript",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 2,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "TypeScript",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 3,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "CoffeeScript",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 4,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "React",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 5,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "Angular",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 6,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "Vue",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 7,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "AWS",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 8,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "AWS lambda",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 9,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "EC2",
+      "is_official": true
+    }
+  },
+  {
+    "model": "default.tag",
+    "pk": 10,
+    "fields": {
+      "created_at": "1970-01-01T09:00:00",
+      "updated_at": "1970-01-01T09:00:00",
+      "name": "S3",
+      "is_official": true
+    }
+  }
+]
