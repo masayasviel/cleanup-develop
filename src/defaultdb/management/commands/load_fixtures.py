@@ -25,7 +25,7 @@ class Command(BaseCommand):
                 s.add(row['reference_table_name'])
             dependency_map[row['table_name']] = s
 
-        sorted = self._topological_sort(dependency_map);
+        sorted = self._topological_sort(dependency_map)
 
         print(sorted)
 
