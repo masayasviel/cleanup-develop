@@ -18,16 +18,16 @@ class Command(BaseCommand):
         dependency_map: dict[str, set[str]] = dict()
         rows = self._get_table_dependency()
         for row in rows:
-            s = set()
+            s: set[str] = set()
             if dependency_map.get(row['table_name']):
                 s = dependency_map.get(row['table_name'])
             if row['reference_table_name'] is not None:
                 s.add(row['reference_table_name'])
             dependency_map[row['table_name']] = s
 
-        sorted = self._topological_sort(dependency_map)
+        sorted_list = self._topological_sort(dependency_map)
 
-        print(sorted)
+        print(sorted_list)
 
     def _get_table_dependency(self):
         with connection.cursor() as cursor:
