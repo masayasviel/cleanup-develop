@@ -1,3 +1,5 @@
+from collections import deque
+
 from django.core import management
 from django.core.management.base import BaseCommand
 from django.core.management.commands import loaddata
@@ -38,24 +40,36 @@ class Command(BaseCommand):
         return rows
 
     def _topological_sort(self, dependency_map: dict[str, set[str]]) -> list[str]:
-        sorted_list: list[str] = []
-        visited = set()
-        temp_marked = set()
+        all_tables = set(dependency_map.keys())
+        for deps in dependency_map.values():
+            all_tables |= deps
 
-        def visit(table_name: str) -> None:
-            if table_name in temp_marked:
-                raise ValueError(f'{table_name} で閉路を検出')
-            if table_name not in visited:
-                temp_marked.add(table_name)
-                dependencies = dependency_map.get(table_name) or set()
-                for dep in dependencies:
-                    visit(dep)
-                temp_marked.remove(table_name)
-                visited.add(table_name)
-                sorted_list.append(table_name)
+        # 各テーブルの依存数（入次数）を初期化する
+        in_degree = {table: 0 for table in all_tables}
+        # 逆方向のグラフ: 依存先から依存しているテーブルの一覧を作成
+        graph = {table: [] for table in all_tables}
+        # グラフと入次数の構築
+        for table, deps in dependency_map.items():
+            in_degree[table] = len(deps)
+            for dep in deps:
+                graph[dep].append(table)
 
-        for table_name in dependency_map.keys():
-            if table_name not in visited:
-                visit(table_name)
+        # 入次数が0のテーブルをキューに追加（幅優先探索の開始点）
+        queue = deque([table for table, degree in in_degree.items() if degree == 0])
+        sorted_list = []
+
+        while queue:
+            table = queue.popleft()
+            sorted_list.append(table)
+            for dependent in graph[table]:
+                in_degree[dependent] -= 1
+                if in_degree[dependent] == 0:
+                    queue.append(dependent)
+
+        # 全テーブルが処理されなかった場合は閉路が存在する
+        if len(sorted_list) != len(all_tables):
+            for table, degree in in_degree.items():
+                if degree > 0:
+                    raise ValueError(f'{table} で閉路を検出')
 
         return sorted_list
