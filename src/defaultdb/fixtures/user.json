@@ -1,6 +1,6 @@
 [
   {
-    "model": "defaultdb.user",
+    "model": "defaultdb.User",
     "pk": 1,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "defaultdb.user",
+    "model": "defaultdb.User",
     "pk": 2,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "defaultdb.user",
+    "model": "defaultdb.User",
     "pk": 3,
     "fields": {
       "created_at": "1970-01-01T09:00:00",

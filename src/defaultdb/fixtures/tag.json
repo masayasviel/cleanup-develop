@@ -1,100 +1,100 @@
 [
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 1,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "JavaScript",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 2,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "TypeScript",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 3,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "CoffeeScript",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 4,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "React",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 5,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "Angular",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 6,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "Vue",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 7,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "AWS",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 8,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "AWS lambda",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 9,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "EC2",
       "is_official": true
     }
   },
   {
-    "model": "default.tag",
+    "model": "defaultdb.Tag",
     "pk": 10,
     "fields": {
       "created_at": "1970-01-01T09:00:00",
-      "updated_at": "1970-01-01T09:00:00",
+      "created_by": 1,
       "name": "S3",
       "is_official": true
     }

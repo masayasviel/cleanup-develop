@@ -1,4 +1,6 @@
 from collections import deque
+import os
+import pathlib
 
 from django.core import management
 from django.core.management.base import BaseCommand
@@ -6,6 +8,7 @@ from django.core.management.commands import loaddata
 from django.db import connection
 
 
+PATH = pathlib.Path(__file__).parent.resolve()
 QUERY = """SELECT
   TABLE_NAME AS table_name,
   REFERENCED_TABLE_NAME AS reference_table_name
@@ -17,6 +20,12 @@ class Command(BaseCommand):
     help = 'dependency_load_fixture'
 
     def handle(self, *args, **options):
+        fixture_files = set()
+        for _root, _dirs, files in os.walk(PATH.parent.parent / 'fixtures'):
+            for file in files:
+                if file.endswith('.json'):
+                    fixture_files.add(file.removesuffix('.json'))
+
         dependency_map: dict[str, set[str]] = dict()
         rows = self._get_table_dependency()
         for row in rows:
@@ -29,7 +38,13 @@ class Command(BaseCommand):
 
         sorted_list = self._topological_sort(dependency_map)
 
-        print(sorted_list)
+        fixture_target = [
+            table_name
+            for table_name in sorted_list
+            if table_name in fixture_files
+        ]
+
+        management.call_command(loaddata.Command(), *fixture_target, verbosity=0)
 
     def _get_table_dependency(self):
         with connection.cursor() as cursor:
