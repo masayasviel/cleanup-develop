@@ -29,7 +29,7 @@ docker-compose run web python manage.py migrate
 ### fixture
 
 ```sh
-docker-compose run web python manage.py loaddata user
+docker-compose run web python manage.py load_fixtures
 ```
 
 ### php my admin
