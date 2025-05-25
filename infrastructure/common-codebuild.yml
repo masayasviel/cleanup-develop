@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: cleanup dev codebuild common resources
+
+Parameters:
+  VpcId:
+    Type: String
+    Description: Vpc Id.
+
+Resources:
+  CodeBuildSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName:
+        !Join [
+          '-',
+          [
+            cleanup,
+            dev,
+            CodeBuild,
+            sg,
+          ],
+        ]
+      GroupDescription:
+        !Join [
+          '-',
+          [
+            cleanup,
+            dev,
+            CodeBuild,
+            sg,
+          ],
+        ]
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 443
+          ToPort: 443
+          IpProtocol: tcp
+
+Outputs:
+  CommonCodeBuildSGId:
+    Description: Cleanup Dev Common CodeBuild SG.
+    Value: !GetAtt CodeBuildSG.GroupId
+    Export:
+      Name: CommonCodeBuildSGId

@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: cleanup develop database
+
+Parameters:
+  VpcId:
+    Type: String
+    Description: Vpc Id.
+  Subnet1AId:
+    Type: String
+    Description: security subnet 1a id
+  Subnet1CId:
+    Type: String
+    Description: security subnet 1c id
+  DBClusterScalingMaxCapacity:
+    Type: Number
+    Description: DB Cluster ServerlessV2ScalingConfiguration MaxCapacity
+  DBClusterScalingMinCapacity:
+    Type: Number
+    Description: DB Cluster ServerlessV2ScalingConfiguration MinCapacity
+  DBName:
+    Type: String
+    Description: Default DB Name
+  DBMasterId:
+    Type: String
+    Description: DB Master ID
+  DBMasterPassword:
+    Type: String
+    Description: DB Master Password
+
+Resources:
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Join [ "-", [ cleanup, dev, rdb, sg ] ]
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !ImportValue CommonCodeBuildSGId
+      Tags:
+        - Key: Name
+          Value: !Join [ "-", [ cleanup, dev, rdb, sg ] ]
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: db-subnet
+      SubnetIds:
+        - !Ref Subnet1AId
+        - !Ref Subnet1CId
+
+  RDSCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-mysql
+      EngineVersion: 8.0.mysql_aurora.3.08.0
+      ServerlessV2ScalingConfiguration:
+        MaxCapacity: !Ref DBClusterScalingMaxCapacity
+        MinCapacity: !Ref DBClusterScalingMinCapacity
+      StorageEncrypted: true
+      VpcSecurityGroupIds:
+        - !Ref DBSecurityGroup
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+      DatabaseName: !Ref DBName
+      MasterUsername: !Ref DBMasterId
+      MasterUserPassword: !Ref DBMasterPassword
+      DBClusterIdentifier: !Join [ "-", [ cleanup, dev, db ] ]
+      Tags:
+        - Key: Name
+          Value: !Join [ "-", [ cleanup, dev, db ] ]
+
+  DBServerPrimaryInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-mysql
+      EngineVersion: 8.0.mysql_aurora.3.08.0
+      AutoMinorVersionUpgrade: false
+      StorageEncrypted: true
+      DBInstanceClass: db.serverless
+      DBClusterIdentifier: !Ref RDSCluster
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+      DBInstanceIdentifier: !Join [ "-", [ cleanup, dev, db, primary ] ]
+      Tags:
+        - Key: Name
+          Value: !Join [ "-", [ cleanup, dev, db, primary ] ]
+
+  DBServerReadReplicaInstance:
+    Type: AWS::RDS::DBInstance
+    DependsOn: DBServerPrimaryInstance
+    Properties:
+      Engine: aurora-mysql
+      EngineVersion: 8.0.mysql_aurora.3.08.0
+      AutoMinorVersionUpgrade: false
+      StorageEncrypted: true
+      DBInstanceClass: db.serverless
+      DBClusterIdentifier: !Ref RDSCluster
+      DBSubnetGroupName:
+        Ref: DBSubnetGroup
+      DBInstanceIdentifier: !Join [ "-", [ cleanup, dev, db, read, replica ] ]
+      Tags:
+        - Key: Name
+          Value: !Join [ "-", [ cleanup, dev, db, read, replica ] ]
