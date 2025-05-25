@@ -13,6 +13,7 @@ services:
     ports:
       - ${MYSQL_PORT}:${MYSQL_PORT}
     volumes:
+      - ./sql:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
 
   web:
