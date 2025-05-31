@@ -103,3 +103,9 @@ Resources:
       Tags:
         - Key: Name
           Value: !Join [ "-", [ cleanup, dev, db, read, replica ] ]
+
+Outputs:
+  MyRDSHostEndpoint:
+    Value: !GetAtt RDSCluster.Endpoint.Address
+    Export:
+      Name: MyRDSHostEndpoint

@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: cleanup db codebuild resources
+
+Parameters:
+  VpcId:
+    Type: String
+    Description: Vpc Id.
+  Subnet1AId:
+    Type: String
+    Description: Build Subnet.
+  Subnet1CId:
+    Type: String
+    Description: security subnet 1c id
+  GitHubSourceRepository:
+    Type: String
+    Description: GitHub Repository Url.
+  DBName:
+    Type: String
+    Description: Default DB Name
+  DBMasterId:
+    Type: String
+    Description: DB Master ID
+  DBMasterPassword:
+    Type: String
+    Description: DB Master Password
+
+Resources:
+  ServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join [ "-", [ cleanup, db, codeBuild, serviceRole] ]
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+        - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Join [ "-", [ cleanup, db, CodeBuild ] ]
+      Source:
+        Location: !Ref GitHubSourceRepository
+        Type: GITHUB
+        GitCloneDepth: 1
+        BuildSpec: "buildspec.yml"
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+        EnvironmentVariables:
+          - Name: DB_HOST
+            Value: !ImportValue MyRDSHostEndpoint
+          - Name: DB_NAME
+            Value: !Ref DBName
+          - Name: DB_USER
+            Value: !Ref DBMasterId
+          - Name: DB_PASSWORD
+            Value: !Ref DBMasterPassword
+      ServiceRole: !GetAtt ServiceRole.Arn
+      Artifacts:
+        Type: NO_ARTIFACTS
+        LogsConfig:
+          CloudWatchLogs:
+            Status: ENABLED
+          S3Logs:
+            Status: DISABLED
+      VpcConfig:
+        SecurityGroupIds:
+          - !ImportValue CommonCodeBuildSGId
+        Subnets:
+          - !Ref Subnet1AId
+          - !Ref Subnet1CId
+        VpcId: !Ref VpcId

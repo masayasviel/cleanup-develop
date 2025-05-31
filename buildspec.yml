@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.13
+    commands:
+      - apt-get update
+      - apt-get install -y default-mysql-client
+      - pip install -r requirements.txt
+
+  build:
+    commands:
+      - for sql in $(ls sql/*.sql | sort); do
+          echo "Applying $sql";
+          mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD $DB_NAME < $sql;
+        done
+
+      - cd src
+
+      - python manage.py migrate
+
+      - python manage.py load_fixtures

@@ -1,0 +1,30 @@
+[
+  {
+    "ParameterKey": "VpcId",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "Subnet1AId",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "Subnet1CId",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "GitHubSourceRepository",
+    "ParameterValue": "https://github.com/masayasviel/cleanup-develop"
+  },
+  {
+    "ParameterKey": "DBName",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "DBMasterId",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "DBMasterPassword",
+    "ParameterValue": ""
+  }
+]
