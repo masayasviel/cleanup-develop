@@ -67,6 +67,7 @@ Resources:
       MasterUsername: !Ref DBMasterId
       MasterUserPassword: !Ref DBMasterPassword
       DBClusterIdentifier: !Join [ "-", [ cleanup, dev, db ] ]
+      PubliclyAccessible: true
       Tags:
         - Key: Name
           Value: !Join [ "-", [ cleanup, dev, db ] ]
