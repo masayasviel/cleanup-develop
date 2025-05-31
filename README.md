@@ -6,14 +6,14 @@
 make venv
 ```
 
-## activate
+### activate
 
 ```sh
 source .venv/bin/activate
 deactivate
 ```
 
-## db
+## Docker
 
 ```shell
 make up
@@ -22,7 +22,9 @@ make up
 ### migrate
 
 ```sh
+# create migrate file
 docker-compose run web python manage.py makemigrations defaultdb
+# migrate
 docker-compose run web python manage.py migrate
 ```
 
@@ -36,7 +38,7 @@ docker-compose run web python manage.py load_fixtures
 
 `http://localhost:8080`
 
-## docker
+### down
 
 ```shell
 make down
@@ -53,4 +55,6 @@ editor ./params/{file name}
 # 拡張子は含めない
 ./create.sh {yml file name}
 ./update.sh {yml file name}
+# IAMロール作成系は下記オプションをつける
+--capabilities CAPABILITY_NAMED_IAM
 ```

@@ -42,6 +42,7 @@ Resources:
         - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
         - "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
@@ -68,11 +69,6 @@ Resources:
       ServiceRole: !GetAtt ServiceRole.Arn
       Artifacts:
         Type: NO_ARTIFACTS
-        LogsConfig:
-          CloudWatchLogs:
-            Status: ENABLED
-          S3Logs:
-            Status: DISABLED
       VpcConfig:
         SecurityGroupIds:
           - !ImportValue CommonCodeBuildSGId
