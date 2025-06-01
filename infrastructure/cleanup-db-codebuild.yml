@@ -43,6 +43,7 @@ Resources:
         - "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
