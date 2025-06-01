@@ -13,7 +13,7 @@ phases:
     commands:
       - for sql in $(ls sql/*.sql | sort); do
           echo "Applying $sql";
-          mysql -h $MYSQL_HOST -u $MYSQL_USER -p $MYSQL_PASSWORD $MYSQL_DATABASE < $sql;
+          mysql -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < $sql;
         done
 
       - cd src
