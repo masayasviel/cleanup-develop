@@ -1,17 +1,5 @@
 [
   {
-    "ParameterKey": "VpcId",
-    "ParameterValue": ""
-  },
-  {
-    "ParameterKey": "Subnet1AId",
-    "ParameterValue": ""
-  },
-  {
-    "ParameterKey": "Subnet1CId",
-    "ParameterValue": ""
-  },
-  {
     "ParameterKey": "DBClusterScalingMaxCapacity",
     "ParameterValue": "64"
   },
@@ -21,14 +9,14 @@
   },
   {
     "ParameterKey": "DBName",
-    "ParameterValue": ""
+    "ParameterValue": "my_database"
   },
   {
     "ParameterKey": "DBMasterId",
-    "ParameterValue": ""
+    "ParameterValue": "my_user"
   },
   {
     "ParameterKey": "DBMasterPassword",
-    "ParameterValue": ""
+    "ParameterValue": "password0000"
   }
 ]

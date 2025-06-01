@@ -2,15 +2,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: cleanup develop database
 
 Parameters:
-  VpcId:
-    Type: String
-    Description: Vpc Id.
-  Subnet1AId:
-    Type: String
-    Description: security subnet 1a id
-  Subnet1CId:
-    Type: String
-    Description: security subnet 1c id
   DBClusterScalingMaxCapacity:
     Type: Number
     Description: DB Cluster ServerlessV2ScalingConfiguration MaxCapacity
@@ -32,7 +23,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: !Join [ "-", [ cleanup, dev, rdb, sg ] ]
-      VpcId: !Ref VpcId
+      VpcId: !ImportValue VpcId
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 3306
@@ -47,8 +38,8 @@ Resources:
     Properties:
       DBSubnetGroupDescription: db-subnet
       SubnetIds:
-        - !Ref Subnet1AId
-        - !Ref Subnet1CId
+        - !ImportValue PublicSubnetAId
+        - !ImportValue PublicSubnetBId
 
   RDSCluster:
     Type: AWS::RDS::DBCluster

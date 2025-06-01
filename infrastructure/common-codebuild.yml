@@ -1,12 +1,111 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: cleanup dev codebuild common resources
 
-Parameters:
-  VpcId:
-    Type: String
-    Description: Vpc Id.
-
 Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: codebuild-vpc
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  AttachInternetGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: public-subnet-a
+
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: public-subnet-b
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      Tags:
+        - Key: Name
+          Value: private-subnet
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTable
+
+  NatEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatEIP.AllocationId
+      SubnetId: !Ref PublicSubnetA
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  PrivateSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref PrivateRouteTable
+
   CodeBuildSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -30,7 +129,7 @@ Resources:
             sg,
           ],
         ]
-      VpcId: !Ref VpcId
+      VpcId: !Ref VPC
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
           FromPort: 443
@@ -38,6 +137,26 @@ Resources:
           IpProtocol: tcp
 
 Outputs:
+  VpcId:
+    Description: Cleanup Dev Common CodeBuild VPC ID.
+    Value: !Ref VPC
+    Export:
+      Name: VpcId
+  PublicSubnetAId:
+    Description: Cleanup Dev Common CodeBuild Public Subnet A ID.
+    Value: !Ref PublicSubnetA
+    Export:
+      Name: PublicSubnetAId
+  PublicSubnetBId:
+    Description: Cleanup Dev Common CodeBuild Public Subnet B ID.
+    Value: !Ref PublicSubnetB
+    Export:
+      Name: PublicSubnetBId
+  PrivateSubnetId:
+    Description: Cleanup Dev Common CodeBuild Private Subnet ID.
+    Value: !Ref PrivateSubnet
+    Export:
+      Name: PrivateSubnetId
   CommonCodeBuildSGId:
     Description: Cleanup Dev Common CodeBuild SG.
     Value: !GetAtt CodeBuildSG.GroupId

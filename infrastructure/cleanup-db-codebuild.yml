@@ -2,15 +2,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: cleanup db codebuild resources
 
 Parameters:
-  VpcId:
-    Type: String
-    Description: Vpc Id.
-  Subnet1AId:
-    Type: String
-    Description: Build Subnet.
-  Subnet1CId:
-    Type: String
-    Description: security subnet 1c id
   GitHubSourceRepository:
     Type: String
     Description: GitHub Repository Url.
@@ -59,13 +50,13 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/standard:7.0
         EnvironmentVariables:
-          - Name: DB_HOST
+          - Name: MYSQL_HOST
             Value: !ImportValue MyRDSHostEndpoint
-          - Name: DB_NAME
+          - Name: MYSQL_DATABASE
             Value: !Ref DBName
-          - Name: DB_USER
+          - Name: MYSQL_USER
             Value: !Ref DBMasterId
-          - Name: DB_PASSWORD
+          - Name: MYSQL_PASSWORD
             Value: !Ref DBMasterPassword
       ServiceRole: !GetAtt ServiceRole.Arn
       Artifacts:
@@ -74,6 +65,5 @@ Resources:
         SecurityGroupIds:
           - !ImportValue CommonCodeBuildSGId
         Subnets:
-          - !Ref Subnet1AId
-          - !Ref Subnet1CId
-        VpcId: !Ref VpcId
+          - !ImportValue PrivateSubnetId
+        VpcId: !ImportValue VpcId
