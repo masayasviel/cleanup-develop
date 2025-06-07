@@ -97,7 +97,7 @@ Resources:
     Type: AWS::Events::Rule
     Properties:
       Name: !Join [ "-", [ cleanup, db, codeBuild, trigger, rule ] ]
-      ScheduleExpression: "cron(0/3 * * * ? *)"
+      ScheduleExpression: "cron(0 15 * * ? *)"
       State: ENABLED
       Targets:
         - Arn: !GetAtt CodeBuildProject.Arn
