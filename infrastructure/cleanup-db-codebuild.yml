@@ -31,7 +31,7 @@ Resources:
       Path: "/"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
-        - "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"
+        - "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
         - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
@@ -70,13 +70,36 @@ Resources:
           - !ImportValue PrivateSubnetId
         VpcId: !ImportValue VpcId
 
+  EventBridgeInvokeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join [ "-", [ cleanup, db, event, invoke, role ] ]
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - events.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: "AllowInvokeCodeBuild"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - codebuild:StartBuild
+                Resource: !GetAtt CodeBuildProject.Arn
+
   CodeBuildTriggerRule:
     Type: AWS::Events::Rule
     Properties:
-      Name: "CodeBuildDailyMidnightTrigger"
-      ScheduleExpression: "cron(0 15 * * ? *)"
-      State: "ENABLED"
+      Name: !Join [ "-", [ cleanup, db, codeBuild, trigger, rule ] ]
+      ScheduleExpression: "cron(0/3 * * * ? *)"
+      State: ENABLED
       Targets:
         - Arn: !GetAtt CodeBuildProject.Arn
           Id: "CodeBuildProjectTarget"
-          RoleArn: !GetAtt ServiceRole.Arn
+          RoleArn: !GetAtt EventBridgeInvokeRole.Arn
