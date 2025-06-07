@@ -31,7 +31,7 @@ Resources:
       Path: "/"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
-        - "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+        - "arn:aws:iam::aws:policy/AWSCodeBuildAdminAccess"
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
         - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
@@ -46,6 +46,7 @@ Resources:
         Type: GITHUB
         GitCloneDepth: 1
         BuildSpec: "buildspec.yml"
+      SourceVersion: main
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
