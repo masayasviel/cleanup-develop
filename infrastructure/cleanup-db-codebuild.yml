@@ -35,6 +35,7 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
         - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+        - "arn:aws:iam::aws:policy/AmazonEventBridgeFullAccess"
 
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
@@ -67,3 +68,14 @@ Resources:
         Subnets:
           - !ImportValue PrivateSubnetId
         VpcId: !ImportValue VpcId
+
+  CodeBuildTriggerRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: "CodeBuildDailyMidnightTrigger"
+      ScheduleExpression: "cron(0 15 * * ? *)"
+      State: "ENABLED"
+      Targets:
+        - Arn: !GetAtt CodeBuildProject.Arn
+          Id: "CodeBuildProjectTarget"
+          RoleArn: !GetAtt ServiceRole.Arn
