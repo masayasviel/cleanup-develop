@@ -3,7 +3,7 @@
     "model": "defaultdb.User",
     "pk": 1,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "name": "管理者",
       "code": "admin"
     }
@@ -12,18 +12,45 @@
     "model": "defaultdb.User",
     "pk": 2,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
-      "name": "フロント",
-      "code": "front"
+      "created_at": "2025-01-01T12:00:00",
+      "name": "言語",
+      "code": "language"
     }
   },
   {
     "model": "defaultdb.User",
     "pk": 3,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
+      "name": "フレームワーク",
+      "code": "framework"
+    }
+  },
+  {
+    "model": "defaultdb.User",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "name": "データベース",
+      "code": "database"
+    }
+  },
+  {
+    "model": "defaultdb.User",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
       "name": "AWS",
       "code": "aws"
+    }
+  },
+  {
+    "model": "defaultdb.User",
+    "pk": 6,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "name": "ノート",
+      "code": "note"
     }
   }
 ]

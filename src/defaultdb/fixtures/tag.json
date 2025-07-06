@@ -3,7 +3,7 @@
     "model": "defaultdb.Tag",
     "pk": 1,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "JavaScript",
       "is_official": true
@@ -13,7 +13,7 @@
     "model": "defaultdb.Tag",
     "pk": 2,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "TypeScript",
       "is_official": true
@@ -23,7 +23,7 @@
     "model": "defaultdb.Tag",
     "pk": 3,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "CoffeeScript",
       "is_official": true
@@ -33,7 +33,7 @@
     "model": "defaultdb.Tag",
     "pk": 4,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "React",
       "is_official": true
@@ -43,7 +43,7 @@
     "model": "defaultdb.Tag",
     "pk": 5,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "Angular",
       "is_official": true
@@ -53,7 +53,7 @@
     "model": "defaultdb.Tag",
     "pk": 6,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "Vue",
       "is_official": true
@@ -63,7 +63,7 @@
     "model": "defaultdb.Tag",
     "pk": 7,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "AWS",
       "is_official": true
@@ -73,7 +73,7 @@
     "model": "defaultdb.Tag",
     "pk": 8,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "AWS lambda",
       "is_official": true
@@ -83,7 +83,7 @@
     "model": "defaultdb.Tag",
     "pk": 9,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "EC2",
       "is_official": true
@@ -93,9 +93,109 @@
     "model": "defaultdb.Tag",
     "pk": 10,
     "fields": {
-      "created_at": "1970-01-01T09:00:00",
+      "created_at": "2025-01-01T12:00:00",
       "created_by": 1,
       "name": "S3",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 11,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "Django",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 12,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "ポエム",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 13,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "FastAPI",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 14,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "PostgreSQL",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 15,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "MySQL",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 16,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "Python",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 17,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "Ruby",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 18,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "Go",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 19,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "Rust",
+      "is_official": true
+    }
+  },
+  {
+    "model": "defaultdb.Tag",
+    "pk": 20,
+    "fields": {
+      "created_at": "2025-01-01T12:00:00",
+      "created_by": 1,
+      "name": "初心者",
       "is_official": true
     }
   }

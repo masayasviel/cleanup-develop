@@ -1,0 +1,50 @@
+[
+    {
+      "model": "defaultdb.Group",
+      "pk": 1,
+      "fields": {
+        "name": "開発",
+        "parent": null
+      }
+    },
+    {
+      "model": "defaultdb.Group",
+      "pk": 2,
+      "fields": {
+        "name": "フロントエンド",
+        "parent": 1
+      }
+    },
+    {
+      "model": "defaultdb.Group",
+      "pk": 3,
+      "fields": {
+        "name": "バックエンド",
+        "parent": 1
+      }
+    },
+    {
+      "model": "defaultdb.Group",
+      "pk": 4,
+      "fields": {
+        "name": "データベース",
+        "parent": 3
+      }
+    },
+    {
+      "model": "defaultdb.Group",
+      "pk": 5,
+      "fields": {
+        "name": "AWS",
+        "parent": 3
+      }
+    },
+    {
+      "model": "defaultdb.Group",
+      "pk": 6,
+      "fields": {
+        "name": "ドキュメント",
+        "parent": null
+      }
+    }
+  ]
