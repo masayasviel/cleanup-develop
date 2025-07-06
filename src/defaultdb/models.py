@@ -83,3 +83,19 @@ class ArticleTagRelation(models.Model):
             models.UniqueConstraint(fields=['article', 'tag'], name='article_and_tag_uniq'),
         ]
         db_table = "article_tag_relation"
+
+
+class CycleRelationA(models.Model):
+    id = models.AutoField(primary_key=True)
+    cycle_relation_b = models.ForeignKey("CycleRelationB", on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        db_table = "cycle_relation_a"
+
+
+class CycleRelationB(models.Model):
+    id = models.AutoField(primary_key=True)
+    cycle_relation_a = models.ForeignKey("CycleRelationA", on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        db_table = "cycle_relation_b"
