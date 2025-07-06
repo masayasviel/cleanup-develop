@@ -1,4 +1,4 @@
-from collections import deque, defaultdict
+from collections import deque
 import os
 import pathlib
 
@@ -19,6 +19,8 @@ FROM
 class Command(BaseCommand):
     help = 'dependency_load_fixture'
 
+    MAX_RETRIES = 5
+
     def handle(self, *args, **options):
         fixture_files = set()
         for _root, _dirs, files in os.walk(PATH.parent.parent / 'fixtures'):
@@ -26,22 +28,43 @@ class Command(BaseCommand):
                 if file.endswith('.json'):
                     fixture_files.add(file.removesuffix('.json'))
 
-        dependency_map: dict[str, set[str]] = defaultdict(set)
+        dependency_map: dict[str, set[str]] = dict()
         rows = self._get_table_dependency()
         for row in rows:
+            s: set[str] = set()
+            if dependency_map.get(row['table_name']):
+                s = dependency_map.get(row['table_name'])
             if row['reference_table_name'] is not None:
-                dependency_map[row['table_name']].add(row['reference_table_name'])
+                s.add(row['reference_table_name'])
+            dependency_map[row['table_name']] = s
 
-        sorted_list = self._topological_sort(dependency_map)
-        print(sorted_list)
+        sorted_list, cyclic_tables = self._topological_sort(dependency_map)
+        print(f"依存解決済み: {sorted_list}")
+        print(f"循環参照: {cyclic_tables}")
 
-        fixture_target = [
-            table_name
-            for table_name in sorted_list
-            if table_name in fixture_files
-        ]
+        sorted_fixtures = [table for table in sorted_list if table in fixture_files]
+        cyclic_fixtures = [table for table in cyclic_tables if table in fixture_files]
 
-        management.call_command(loaddata.Command(), *fixture_target, verbosity=0)
+        # 依存関係が解決済みのfixtureを投入
+        if sorted_fixtures:
+            management.call_command(loaddata.Command(), *sorted_fixtures, verbosity=0)
+
+        # 循環参照されるテーブルをリトライ戦略で追加
+        remaining = cyclic_fixtures.copy()
+        for _ in range(self.MAX_RETRIES):
+            if not remaining:
+                break
+            failed = []
+            for table in remaining:
+                try:
+                    management.call_command(loaddata.Command(), table, verbosity=0)
+                except Exception:
+                    failed.append(table)
+            if not failed:
+                break
+            remaining = failed.copy()
+        else:
+            raise RuntimeError(f"最大リトライ回数 {self.MAX_RETRIES} を超えても以下の fixture を投入できませんでした: {remaining}")
 
     def _get_table_dependency(self):
         with connection.cursor() as cursor:
@@ -50,8 +73,7 @@ class Command(BaseCommand):
             rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
         return rows
 
-    def _topological_sort(self, dependency_map: dict[str, set[str]]) -> list[str]:
-        all_tables = set(dependency_map.keys())
+    def _topological_sort(self, dependency_map: dict[str, set[str]]) -> tuple[list[str], list[str]]:
         # { テーブル名: 入次数 }
         in_degree: dict[str, int] = dict()
         # 依存先から依存しているテーブルの一覧を作成
@@ -79,13 +101,11 @@ class Command(BaseCommand):
                 if in_degree[dependent] == 0:
                     queue.append(dependent)
 
-        # 閉路が存在する（頂点をすべて処理できていない）場合
-        if len(sorted_list) != len(all_tables):
-            closed_circuit = ', '.join([
-                table
-                for table, degree in in_degree.items()
-                if degree > 0
-            ])
-            raise ValueError(f'{closed_circuit} で閉路を検出')
+        # 閉路
+        cyclic_tables = [
+            table
+            for table, degree in in_degree.items()
+            if degree > 0
+        ]
 
-        return sorted_list
+        return sorted_list, cyclic_tables
