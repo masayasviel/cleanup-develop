@@ -1,4 +1,4 @@
-from collections import deque
+from collections import deque, defaultdict
 import os
 import pathlib
 
@@ -26,15 +26,11 @@ class Command(BaseCommand):
                 if file.endswith('.json'):
                     fixture_files.add(file.removesuffix('.json'))
 
-        dependency_map: dict[str, set[str]] = dict()
+        dependency_map: dict[str, set[str]] = defaultdict(set)
         rows = self._get_table_dependency()
         for row in rows:
-            s: set[str] = set()
-            if dependency_map.get(row['table_name']):
-                s = dependency_map.get(row['table_name'])
             if row['reference_table_name'] is not None:
-                s.add(row['reference_table_name'])
-            dependency_map[row['table_name']] = s
+                dependency_map[row['table_name']].add(row['reference_table_name'])
 
         sorted_list = self._topological_sort(dependency_map)
         print(sorted_list)
@@ -52,7 +48,6 @@ class Command(BaseCommand):
             cursor.execute(QUERY)
             columns = [col[0] for col in cursor.description]
             rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
-
         return rows
 
     def _topological_sort(self, dependency_map: dict[str, set[str]]) -> list[str]:
